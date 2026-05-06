@@ -55,3 +55,19 @@ CodeCoverage/
 *.VisualState.xml
 TestResult.xml
 nunit-*.xml
+
+# Local Claude Code settings (user-specific permission allowlist)
+.claude/settings.local.json
+
+# macOS metadata
+.DS_Store
+**/.DS_Store
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.user
+
+# Local environment / secrets
+appsettings.*.local.json
