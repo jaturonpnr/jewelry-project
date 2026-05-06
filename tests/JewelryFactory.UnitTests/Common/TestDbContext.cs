@@ -17,11 +17,20 @@ public class TestDbContext(DbContextOptions<TestDbContext> options) : DbContext(
     public DbSet<Worker> Workers => Set<Worker>();
     public DbSet<MaterialType> MaterialTypes => Set<MaterialType>();
 
+    public DbSet<RawMaterialItem> RawMaterialItems => Set<RawMaterialItem>();
+    public DbSet<StoneItem> StoneItems => Set<StoneItem>();
+    public DbSet<StoneParcel> StoneParcels => Set<StoneParcel>();
+    public DbSet<FinishedGoods> FinishedGoods => Set<FinishedGoods>();
+    public DbSet<StockMovement> StockMovements => Set<StockMovement>();
+    public DbSet<SalesOrder> SalesOrders => Set<SalesOrder>();
+    public DbSet<SalesOrderItem> SalesOrderItems => Set<SalesOrderItem>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Address is a value object — declare as owned so InMemory provider doesn't need a PK.
         modelBuilder.Entity<Customer>().OwnsOne(c => c.Address);
         modelBuilder.Entity<Supplier>().OwnsOne(s => s.Address);
+        modelBuilder.Entity<SalesOrder>().OwnsOne(o => o.ShippingAddress);
         base.OnModelCreating(modelBuilder);
     }
 }

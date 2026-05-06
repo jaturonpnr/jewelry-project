@@ -20,6 +20,17 @@ public class ApplicationDbContext(
     public DbSet<Worker> Workers => Set<Worker>();
     public DbSet<MaterialType> MaterialTypes => Set<MaterialType>();
 
+    // Phase 1 - Module 3 (Inventory)
+    public DbSet<RawMaterialItem> RawMaterialItems => Set<RawMaterialItem>();
+    public DbSet<StoneItem> StoneItems => Set<StoneItem>();
+    public DbSet<StoneParcel> StoneParcels => Set<StoneParcel>();
+    public DbSet<FinishedGoods> FinishedGoods => Set<FinishedGoods>();
+    public DbSet<StockMovement> StockMovements => Set<StockMovement>();
+
+    // Phase 1 - Module 4 (Sales Order)
+    public DbSet<SalesOrder> SalesOrders => Set<SalesOrder>();
+    public DbSet<SalesOrderItem> SalesOrderItems => Set<SalesOrderItem>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Apply all IEntityTypeConfiguration<> in this assembly

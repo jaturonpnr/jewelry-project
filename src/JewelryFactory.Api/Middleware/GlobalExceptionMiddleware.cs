@@ -41,6 +41,12 @@ public class GlobalExceptionMiddleware(RequestDelegate next, ILogger<GlobalExcep
             await WriteAsync(context, StatusCodes.Status409Conflict,
                 new[] { new ApiError("business", ex.Message) });
         }
+        catch (ConcurrencyException ex)
+        {
+            logger.LogWarning("Concurrency conflict: {Message}", ex.Message);
+            await WriteAsync(context, StatusCodes.Status409Conflict,
+                new[] { new ApiError("concurrency", ex.Message) });
+        }
         catch (Exception ex)
         {
             logger.LogError(ex, "Unhandled exception");

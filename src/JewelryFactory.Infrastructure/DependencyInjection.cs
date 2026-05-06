@@ -24,6 +24,7 @@ public static class DependencyInjection
         services.Configure<JwtSettings>(config.GetSection(JwtSettings.SectionName));
         services.AddSingleton<IPasswordHasher, BCryptPasswordHasher>();
         services.AddSingleton<IJwtTokenService, JwtTokenService>();
+        services.AddScoped<IStockMovementWriter, StockMovementWriter>();
 
         return services;
     }
