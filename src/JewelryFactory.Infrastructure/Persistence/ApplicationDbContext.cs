@@ -14,6 +14,12 @@ public class ApplicationDbContext(
     public DbSet<User> Users => Set<User>();
     public DbSet<RefreshToken> RefreshTokens => Set<RefreshToken>();
 
+    // Phase 1 - Module 2 (Master Data)
+    public DbSet<Customer> Customers => Set<Customer>();
+    public DbSet<Supplier> Suppliers => Set<Supplier>();
+    public DbSet<Worker> Workers => Set<Worker>();
+    public DbSet<MaterialType> MaterialTypes => Set<MaterialType>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Apply all IEntityTypeConfiguration<> in this assembly
