@@ -1,4 +1,3 @@
-import { DecimalPipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -9,16 +8,14 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTableModule } from '@angular/material/table';
-import { RouterLink } from '@angular/router';
-import { CustomerService } from '../customer.service';
-import { Customer } from '../customer.types';
+import { extractErrorMessage } from '../../../core/api/error-utils';
+import { SupplierService } from '../supplier.service';
+import { Supplier } from '../supplier.types';
 
 @Component({
-  selector: 'app-customer-list',
+  selector: 'app-supplier-list',
   imports: [
     FormsModule,
-    RouterLink,
-    DecimalPipe,
     MatTableModule,
     MatPaginatorModule,
     MatFormFieldModule,
@@ -32,22 +29,22 @@ import { Customer } from '../customer.types';
   template: `
     <div class="page-header">
       <div>
-        <h1>Customers</h1>
-        <p class="subtitle">B2B customers — wholesalers, retailers, catalogue publishers</p>
+        <h1>Suppliers</h1>
+        <p class="subtitle">Gold, silver, gemstone, findings & equipment suppliers</p>
       </div>
-      <button mat-flat-button color="primary" routerLink="/customers/new">
-        <mat-icon>add</mat-icon> New Customer
+      <button mat-flat-button color="primary" disabled>
+        <mat-icon>add</mat-icon> New Supplier
       </button>
     </div>
 
     <div class="toolbar">
       <mat-form-field appearance="outline" class="search">
-        <mat-label>Search by code, name, contact</mat-label>
+        <mat-label>Search by code or name</mat-label>
         <input
           matInput
           [(ngModel)]="searchTerm"
           (keyup.enter)="onSearch()"
-          placeholder="e.g. CUST-0001 or Goldsmith"
+          placeholder="e.g. SUP-DIA-001"
         />
         <button matSuffix mat-icon-button (click)="onSearch()" aria-label="Search">
           <mat-icon>search</mat-icon>
@@ -55,9 +52,7 @@ import { Customer } from '../customer.types';
       </mat-form-field>
     </div>
 
-    @if (loading()) {
-      <mat-progress-bar mode="indeterminate" />
-    }
+    @if (loading()) { <mat-progress-bar mode="indeterminate" /> }
 
     @if (errorMessage(); as msg) {
       <div class="error">
@@ -67,47 +62,47 @@ import { Customer } from '../customer.types';
     }
 
     <div class="table-container mat-elevation-z2">
-      <table mat-table [dataSource]="customers()">
+      <table mat-table [dataSource]="suppliers()">
         <ng-container matColumnDef="code">
           <th mat-header-cell *matHeaderCellDef>Code</th>
-          <td mat-cell *matCellDef="let c">{{ c.code }}</td>
+          <td mat-cell *matCellDef="let s">{{ s.code }}</td>
         </ng-container>
 
         <ng-container matColumnDef="companyName">
           <th mat-header-cell *matHeaderCellDef>Company</th>
-          <td mat-cell *matCellDef="let c">
+          <td mat-cell *matCellDef="let s">
             <div class="company-cell">
-              <span>{{ c.companyName }}</span>
-              @if (c.contactPerson) {
-                <small class="contact">{{ c.contactPerson }}</small>
-              }
+              <span>{{ s.companyName }}</span>
+              @if (s.contactPerson) { <small class="contact">{{ s.contactPerson }}</small> }
             </div>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="type">
           <th mat-header-cell *matHeaderCellDef>Type</th>
-          <td mat-cell *matCellDef="let c">
-            <mat-chip>{{ c.type }}</mat-chip>
+          <td mat-cell *matCellDef="let s">
+            <mat-chip [class]="'type-' + s.type.toLowerCase()">{{ s.type }}</mat-chip>
           </td>
         </ng-container>
 
         <ng-container matColumnDef="country">
           <th mat-header-cell *matHeaderCellDef>Country</th>
-          <td mat-cell *matCellDef="let c">{{ c.address.country || '—' }}</td>
+          <td mat-cell *matCellDef="let s">{{ s.address.country || '—' }}</td>
         </ng-container>
 
-        <ng-container matColumnDef="creditLimit">
-          <th mat-header-cell *matHeaderCellDef class="num">Credit Limit</th>
-          <td mat-cell *matCellDef="let c" class="num">
-            {{ c.defaultCurrency }} {{ c.creditLimit | number:'1.2-2' }}
+        <ng-container matColumnDef="certifications">
+          <th mat-header-cell *matHeaderCellDef>Certifications</th>
+          <td mat-cell *matCellDef="let s">
+            @if (s.certifications) {
+              <span class="cert">{{ s.certifications }}</span>
+            } @else { — }
           </td>
         </ng-container>
 
         <ng-container matColumnDef="status">
           <th mat-header-cell *matHeaderCellDef>Active</th>
-          <td mat-cell *matCellDef="let c">
-            @if (c.isActive) {
+          <td mat-cell *matCellDef="let s">
+            @if (s.isActive) {
               <mat-icon class="active-icon">check_circle</mat-icon>
             } @else {
               <mat-icon class="inactive-icon">cancel</mat-icon>
@@ -116,16 +111,10 @@ import { Customer } from '../customer.types';
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr
-          mat-row
-          *matRowDef="let row; columns: displayedColumns;"
-          class="clickable"
-          [routerLink]="['/customers', row.id]"
-        ></tr>
-
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         <tr class="empty-row" *matNoDataRow>
           <td [attr.colspan]="displayedColumns.length">
-            @if (!loading()) { No customers found. }
+            @if (!loading()) { No suppliers found. }
           </td>
         </tr>
       </table>
@@ -151,20 +140,14 @@ import { Customer } from '../customer.types';
     .subtitle { margin: 0; color: #607d8b; font-size: 13px; }
     .toolbar { margin-bottom: 16px; }
     .search { width: 100%; max-width: 480px; }
-    .table-container {
-      background: #fff;
-      border-radius: 8px;
-      overflow: hidden;
-    }
+    .table-container { background: #fff; border-radius: 8px; overflow: hidden; }
     table { width: 100%; }
-    .num { text-align: right; }
     .company-cell { display: flex; flex-direction: column; }
     .contact { color: #607d8b; font-size: 12px; }
+    .cert { font-size: 12px; color: #455a64; }
     .active-icon { color: #43a047; }
     .inactive-icon { color: #bdbdbd; }
     .empty-row td { text-align: center; padding: 24px; color: #607d8b; }
-    .clickable { cursor: pointer; }
-    .clickable:hover { background: #f5f5f5; }
     .error {
       display: flex;
       gap: 8px;
@@ -175,14 +158,22 @@ import { Customer } from '../customer.types';
       border-radius: 4px;
       margin-bottom: 12px;
     }
+
+    /* Type-specific chip colors */
+    mat-chip.type-gold      { background: #fff8e1; color: #6d4c00; }
+    mat-chip.type-silver    { background: #eceff1; color: #455a64; }
+    mat-chip.type-preciousstone { background: #e8f5e9; color: #1b5e20; }
+    mat-chip.type-findings  { background: #e3f2fd; color: #0d47a1; }
+    mat-chip.type-equipment { background: #f3e5f5; color: #4a148c; }
+    mat-chip.type-consumable { background: #fbe9e7; color: #bf360c; }
   `],
 })
-export class CustomerList implements OnInit {
-  private readonly service = inject(CustomerService);
+export class SupplierList implements OnInit {
+  private readonly service = inject(SupplierService);
 
-  readonly displayedColumns = ['code', 'companyName', 'type', 'country', 'creditLimit', 'status'];
+  readonly displayedColumns = ['code', 'companyName', 'type', 'country', 'certifications', 'status'];
 
-  readonly customers = signal<Customer[]>([]);
+  readonly suppliers = signal<Supplier[]>([]);
   readonly totalCount = signal(0);
   readonly pageIndex = signal(0);
   readonly pageSize = signal(20);
@@ -191,9 +182,7 @@ export class CustomerList implements OnInit {
 
   searchTerm = '';
 
-  ngOnInit(): void {
-    this.load();
-  }
+  ngOnInit(): void { this.load(); }
 
   onSearch(): void {
     this.pageIndex.set(0);
@@ -209,23 +198,20 @@ export class CustomerList implements OnInit {
   private load(): void {
     this.loading.set(true);
     this.errorMessage.set(null);
-
-    this.service
-      .getPaged({
-        page: this.pageIndex() + 1,
-        pageSize: this.pageSize(),
-        search: this.searchTerm.trim() || undefined,
-      })
-      .subscribe({
-        next: (paged) => {
-          this.customers.set(paged.items);
-          this.totalCount.set(paged.totalCount);
-          this.loading.set(false);
-        },
-        error: (err) => {
-          this.loading.set(false);
-          this.errorMessage.set(err?.error?.errors?.[0]?.message ?? 'Failed to load customers.');
-        },
-      });
+    this.service.getPaged({
+      page: this.pageIndex() + 1,
+      pageSize: this.pageSize(),
+      search: this.searchTerm.trim() || undefined,
+    }).subscribe({
+      next: (paged) => {
+        this.suppliers.set(paged.items);
+        this.totalCount.set(paged.totalCount);
+        this.loading.set(false);
+      },
+      error: (err) => {
+        this.loading.set(false);
+        this.errorMessage.set(extractErrorMessage(err, 'Failed to load suppliers.'));
+      },
+    });
   }
 }

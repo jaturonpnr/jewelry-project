@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { ApiResponse, PagedRequest, PagedResult } from '../../core/api/api-response';
-import { Customer } from './customer.types';
+import { CreateCustomerDto, Customer, UpdateCustomerDto } from './customer.types';
 
 @Injectable({ providedIn: 'root' })
 export class CustomerService {
@@ -27,5 +27,21 @@ export class CustomerService {
     return this.http
       .get<ApiResponse<Customer>>(`${this.url}/${id}`)
       .pipe(map((res) => res.data!));
+  }
+
+  create(dto: CreateCustomerDto): Observable<Customer> {
+    return this.http
+      .post<ApiResponse<Customer>>(this.url, dto)
+      .pipe(map((res) => res.data!));
+  }
+
+  update(id: string, dto: UpdateCustomerDto): Observable<Customer> {
+    return this.http
+      .put<ApiResponse<Customer>>(`${this.url}/${id}`, dto)
+      .pipe(map((res) => res.data!));
+  }
+
+  delete(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.url}/${id}`);
   }
 }
