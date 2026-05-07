@@ -10,6 +10,7 @@ import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
+import { RouterLink } from '@angular/router';
 import { extractErrorMessage } from '../../../core/api/error-utils';
 import { SalesOrderQuery, SalesOrderService } from '../sales-order.service';
 import { SalesOrder, SalesOrderStatus, SalesOrderStatusName } from '../sales-order.types';
@@ -18,6 +19,7 @@ import { SalesOrder, SalesOrderStatus, SalesOrderStatusName } from '../sales-ord
   selector: 'app-sales-order-list',
   imports: [
     FormsModule,
+    RouterLink,
     DecimalPipe,
     DatePipe,
     MatTableModule,
@@ -118,7 +120,12 @@ import { SalesOrder, SalesOrderStatus, SalesOrderStatusName } from '../sales-ord
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns;"
+          class="clickable"
+          [routerLink]="['/sales-orders', row.id]"
+        ></tr>
         <tr class="empty-row" *matNoDataRow>
           <td [attr.colspan]="displayedColumns.length">
             @if (!loading()) { No orders found. }
@@ -158,6 +165,8 @@ import { SalesOrder, SalesOrderStatus, SalesOrderStatusName } from '../sales-ord
     .company-cell { display: flex; flex-direction: column; }
     .contact { color: #607d8b; font-size: 12px; }
     .empty-row td { text-align: center; padding: 24px; color: #607d8b; }
+    .clickable { cursor: pointer; }
+    .clickable:hover { background: #f5f5f5; }
     .error {
       display: flex;
       gap: 8px;

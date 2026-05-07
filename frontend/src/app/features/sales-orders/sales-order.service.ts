@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import { ApiResponse, PagedRequest, PagedResult } from '../../core/api/api-response';
-import { SalesOrder } from './sales-order.types';
+import { ChangeSalesOrderStatusDto, SalesOrder } from './sales-order.types';
 
 export interface SalesOrderQuery extends PagedRequest {
   status?: number;
@@ -37,6 +37,12 @@ export class SalesOrderService {
   getById(id: string): Observable<SalesOrder> {
     return this.http
       .get<ApiResponse<SalesOrder>>(`${this.url}/${id}`)
+      .pipe(map((res) => res.data!));
+  }
+
+  changeStatus(id: string, dto: ChangeSalesOrderStatusDto): Observable<SalesOrder> {
+    return this.http
+      .post<ApiResponse<SalesOrder>>(`${this.url}/${id}/status`, dto)
       .pipe(map((res) => res.data!));
   }
 }

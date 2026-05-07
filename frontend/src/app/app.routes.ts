@@ -52,6 +52,11 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/sales-orders/sales-order-list/sales-order-list').then((m) => m.SalesOrderList),
       },
+      {
+        path: 'sales-orders/:id',
+        loadComponent: () =>
+          import('./features/sales-orders/sales-order-detail/sales-order-detail').then((m) => m.SalesOrderDetail),
+      },
     ],
   },
   { path: '**', redirectTo: '' },
