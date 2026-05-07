@@ -31,6 +31,10 @@ public class ApplicationDbContext(
     public DbSet<SalesOrder> SalesOrders => Set<SalesOrder>();
     public DbSet<SalesOrderItem> SalesOrderItems => Set<SalesOrderItem>();
 
+    // Phase 1 - Module 5 (Production Tracking)
+    public DbSet<WorkOrder> WorkOrders => Set<WorkOrder>();
+    public DbSet<WorkOrderStage> WorkOrderStages => Set<WorkOrderStage>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Apply all IEntityTypeConfiguration<> in this assembly

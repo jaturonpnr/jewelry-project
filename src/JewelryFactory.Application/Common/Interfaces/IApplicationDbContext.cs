@@ -30,6 +30,10 @@ public interface IApplicationDbContext
     DbSet<SalesOrder> SalesOrders { get; }
     DbSet<SalesOrderItem> SalesOrderItems { get; }
 
+    // Phase 1 - Module 5 (Production Tracking)
+    DbSet<WorkOrder> WorkOrders { get; }
+    DbSet<WorkOrderStage> WorkOrderStages { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
     /// <summary>

@@ -24,6 +24,8 @@ public class TestDbContext(DbContextOptions<TestDbContext> options) : DbContext(
     public DbSet<StockMovement> StockMovements => Set<StockMovement>();
     public DbSet<SalesOrder> SalesOrders => Set<SalesOrder>();
     public DbSet<SalesOrderItem> SalesOrderItems => Set<SalesOrderItem>();
+    public DbSet<WorkOrder> WorkOrders => Set<WorkOrder>();
+    public DbSet<WorkOrderStage> WorkOrderStages => Set<WorkOrderStage>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
