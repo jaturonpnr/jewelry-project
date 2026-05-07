@@ -57,6 +57,39 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/sales-orders/sales-order-detail/sales-order-detail').then((m) => m.SalesOrderDetail),
       },
+      {
+        path: 'inventory',
+        loadComponent: () =>
+          import('./features/inventory/inventory-shell/inventory-shell').then((m) => m.InventoryShell),
+        children: [
+          { path: '', redirectTo: 'raw-materials', pathMatch: 'full' },
+          {
+            path: 'raw-materials',
+            loadComponent: () =>
+              import('./features/inventory/raw-materials/raw-material-list/raw-material-list').then((m) => m.RawMaterialList),
+          },
+          {
+            path: 'raw-materials/receive',
+            loadComponent: () =>
+              import('./features/inventory/raw-materials/receive-raw-material/receive-raw-material').then((m) => m.ReceiveRawMaterial),
+          },
+          {
+            path: 'stone-items',
+            loadComponent: () =>
+              import('./features/inventory/stone-items/stone-item-list/stone-item-list').then((m) => m.StoneItemList),
+          },
+          {
+            path: 'stone-parcels',
+            loadComponent: () =>
+              import('./features/inventory/stone-parcels/stone-parcel-list/stone-parcel-list').then((m) => m.StoneParcelList),
+          },
+          {
+            path: 'movements',
+            loadComponent: () =>
+              import('./features/inventory/stock-movements/stock-movement-list/stock-movement-list').then((m) => m.StockMovementList),
+          },
+        ],
+      },
     ],
   },
   { path: '**', redirectTo: '' },
