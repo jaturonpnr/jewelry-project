@@ -33,6 +33,10 @@ public class TestDbContext(DbContextOptions<TestDbContext> options) : DbContext(
     public DbSet<BomStoneLine> BomStoneLines => Set<BomStoneLine>();
     public DbSet<BomLaborLine> BomLaborLines => Set<BomLaborLine>();
 
+    // Phase 2 - Module 8 (Quality Control)
+    public DbSet<QcInspection> QcInspections => Set<QcInspection>();
+    public DbSet<QcDefect> QcDefects => Set<QcDefect>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Customer>().OwnsOne(c => c.Address);

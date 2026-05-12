@@ -40,6 +40,10 @@ public interface IApplicationDbContext
     DbSet<BomStoneLine> BomStoneLines { get; }
     DbSet<BomLaborLine> BomLaborLines { get; }
 
+    // Phase 2 - Module 8 (Quality Control)
+    DbSet<QcInspection> QcInspections { get; }
+    DbSet<QcDefect> QcDefects { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
     /// <summary>

@@ -41,6 +41,10 @@ public class ApplicationDbContext(
     public DbSet<BomStoneLine> BomStoneLines => Set<BomStoneLine>();
     public DbSet<BomLaborLine> BomLaborLines => Set<BomLaborLine>();
 
+    // Phase 2 - Module 8 (Quality Control)
+    public DbSet<QcInspection> QcInspections => Set<QcInspection>();
+    public DbSet<QcDefect> QcDefects => Set<QcDefect>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Apply all IEntityTypeConfiguration<> in this assembly

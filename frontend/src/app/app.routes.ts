@@ -78,6 +78,21 @@ export const routes: Routes = [
           import('./features/bom/bom-form/bom-form').then((m) => m.BomForm),
       },
       {
+        path: 'qc',
+        loadComponent: () =>
+          import('./features/qc/qc-list/qc-list').then((m) => m.QcList),
+      },
+      {
+        path: 'qc/new',
+        loadComponent: () =>
+          import('./features/qc/qc-form/qc-form').then((m) => m.QcForm),
+      },
+      {
+        path: 'qc/:id',
+        loadComponent: () =>
+          import('./features/qc/qc-form/qc-form').then((m) => m.QcForm),
+      },
+      {
         path: 'work-orders/:id',
         loadComponent: () =>
           import('./features/work-orders/work-order-detail/work-order-detail').then((m) => m.WorkOrderDetail),
