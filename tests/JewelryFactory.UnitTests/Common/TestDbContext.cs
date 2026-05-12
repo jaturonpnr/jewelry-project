@@ -27,12 +27,20 @@ public class TestDbContext(DbContextOptions<TestDbContext> options) : DbContext(
     public DbSet<WorkOrder> WorkOrders => Set<WorkOrder>();
     public DbSet<WorkOrderStage> WorkOrderStages => Set<WorkOrderStage>();
 
+    // Phase 2 - Module 7 (BOM & Costing)
+    public DbSet<BomTemplate> BomTemplates => Set<BomTemplate>();
+    public DbSet<BomMaterialLine> BomMaterialLines => Set<BomMaterialLine>();
+    public DbSet<BomStoneLine> BomStoneLines => Set<BomStoneLine>();
+    public DbSet<BomLaborLine> BomLaborLines => Set<BomLaborLine>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Address is a value object — declare as owned so InMemory provider doesn't need a PK.
         modelBuilder.Entity<Customer>().OwnsOne(c => c.Address);
         modelBuilder.Entity<Supplier>().OwnsOne(s => s.Address);
         modelBuilder.Entity<SalesOrder>().OwnsOne(o => o.ShippingAddress);
+        // BomStoneLine computed properties — not stored
+        modelBuilder.Entity<BomStoneLine>().Ignore(s => s.TotalCaratWeight).Ignore(s => s.LineCostThb);
+        modelBuilder.Entity<BomLaborLine>().Ignore(l => l.LaborCostThb);
         base.OnModelCreating(modelBuilder);
     }
 }

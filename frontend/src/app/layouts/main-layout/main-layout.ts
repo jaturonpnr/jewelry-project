@@ -129,5 +129,6 @@ export class MainLayout {
     { label: 'Inventory', icon: 'inventory_2', route: '/inventory' },
     { label: 'Sales Orders', icon: 'receipt_long', route: '/sales-orders' },
     { label: 'Work Orders', icon: 'precision_manufacturing', route: '/work-orders' },
+    { label: 'BOM & Costing', icon: 'receipt', route: '/bom' },
   ];
 }

@@ -63,6 +63,21 @@ export const routes: Routes = [
           import('./features/work-orders/work-order-list/work-order-list').then((m) => m.WorkOrderList),
       },
       {
+        path: 'bom',
+        loadComponent: () =>
+          import('./features/bom/bom-list/bom-list').then((m) => m.BomList),
+      },
+      {
+        path: 'bom/new',
+        loadComponent: () =>
+          import('./features/bom/bom-form/bom-form').then((m) => m.BomForm),
+      },
+      {
+        path: 'bom/:id',
+        loadComponent: () =>
+          import('./features/bom/bom-form/bom-form').then((m) => m.BomForm),
+      },
+      {
         path: 'work-orders/:id',
         loadComponent: () =>
           import('./features/work-orders/work-order-detail/work-order-detail').then((m) => m.WorkOrderDetail),

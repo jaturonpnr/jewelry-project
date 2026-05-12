@@ -35,6 +35,12 @@ public class ApplicationDbContext(
     public DbSet<WorkOrder> WorkOrders => Set<WorkOrder>();
     public DbSet<WorkOrderStage> WorkOrderStages => Set<WorkOrderStage>();
 
+    // Phase 2 - Module 7 (BOM & Costing)
+    public DbSet<BomTemplate> BomTemplates => Set<BomTemplate>();
+    public DbSet<BomMaterialLine> BomMaterialLines => Set<BomMaterialLine>();
+    public DbSet<BomStoneLine> BomStoneLines => Set<BomStoneLine>();
+    public DbSet<BomLaborLine> BomLaborLines => Set<BomLaborLine>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Apply all IEntityTypeConfiguration<> in this assembly

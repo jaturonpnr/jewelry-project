@@ -34,6 +34,12 @@ public interface IApplicationDbContext
     DbSet<WorkOrder> WorkOrders { get; }
     DbSet<WorkOrderStage> WorkOrderStages { get; }
 
+    // Phase 2 - Module 7 (BOM & Costing)
+    DbSet<BomTemplate> BomTemplates { get; }
+    DbSet<BomMaterialLine> BomMaterialLines { get; }
+    DbSet<BomStoneLine> BomStoneLines { get; }
+    DbSet<BomLaborLine> BomLaborLines { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
