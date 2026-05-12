@@ -58,6 +58,16 @@ export const routes: Routes = [
           import('./features/sales-orders/sales-order-detail/sales-order-detail').then((m) => m.SalesOrderDetail),
       },
       {
+        path: 'work-orders',
+        loadComponent: () =>
+          import('./features/work-orders/work-order-list/work-order-list').then((m) => m.WorkOrderList),
+      },
+      {
+        path: 'work-orders/:id',
+        loadComponent: () =>
+          import('./features/work-orders/work-order-detail/work-order-detail').then((m) => m.WorkOrderDetail),
+      },
+      {
         path: 'inventory',
         loadComponent: () =>
           import('./features/inventory/inventory-shell/inventory-shell').then((m) => m.InventoryShell),

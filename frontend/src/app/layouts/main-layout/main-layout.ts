@@ -128,6 +128,6 @@ export class MainLayout {
     { label: 'Suppliers', icon: 'local_shipping', route: '/suppliers' },
     { label: 'Inventory', icon: 'inventory_2', route: '/inventory' },
     { label: 'Sales Orders', icon: 'receipt_long', route: '/sales-orders' },
-    { label: 'Production', icon: 'precision_manufacturing', route: '/production' },
+    { label: 'Work Orders', icon: 'precision_manufacturing', route: '/work-orders' },
   ];
 }
