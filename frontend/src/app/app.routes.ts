@@ -130,6 +130,26 @@ export const routes: Routes = [
           },
         ],
       },
+      {
+        path: 'shipments',
+        loadComponent: () =>
+          import('./features/shipping/shipment-list/shipment-list').then((m) => m.ShipmentList),
+      },
+      {
+        path: 'shipments/:id',
+        loadComponent: () =>
+          import('./features/shipping/shipment-detail/shipment-detail').then((m) => m.ShipmentDetail),
+      },
+      {
+        path: 'invoices',
+        loadComponent: () =>
+          import('./features/shipping/invoice-list/invoice-list').then((m) => m.InvoiceList),
+      },
+      {
+        path: 'invoices/:id',
+        loadComponent: () =>
+          import('./features/shipping/invoice-detail/invoice-detail').then((m) => m.InvoiceDetail),
+      },
     ],
   },
   { path: '**', redirectTo: '' },

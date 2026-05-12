@@ -131,5 +131,7 @@ export class MainLayout {
     { label: 'Work Orders', icon: 'precision_manufacturing', route: '/work-orders' },
     { label: 'BOM & Costing', icon: 'receipt', route: '/bom' },
     { label: 'Quality Control', icon: 'fact_check', route: '/qc' },
+    { label: 'Shipments', icon: 'local_shipping', route: '/shipments' },
+    { label: 'Invoices', icon: 'description', route: '/invoices' },
   ];
 }

@@ -44,6 +44,12 @@ public interface IApplicationDbContext
     DbSet<QcInspection> QcInspections { get; }
     DbSet<QcDefect> QcDefects { get; }
 
+    // Phase 2 - Module 11 (Shipping & Invoice)
+    DbSet<Shipment> Shipments { get; }
+    DbSet<ShipmentItem> ShipmentItems { get; }
+    DbSet<Invoice> Invoices { get; }
+    DbSet<InvoiceLineItem> InvoiceLineItems { get; }
+
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
     /// <summary>
